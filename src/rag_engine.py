@@ -458,7 +458,7 @@ class KyrgyzRealEstateRAG:
             f"=== USER QUESTION ===\n{q or 'Give a complete buyer assessment combining price fairness, listing signals, and KR legal/mortgage checklist.'}"
         )
 
-        llm_reply = self._call_llm(sys_prompt, user_prompt, max_tokens=1100)
+        llm_reply = self._call_llm(sys_prompt, user_prompt, max_tokens=1600)
         if not llm_reply:
             llm_reply = (
                 f"**ML:** {ml_summary}\n\n"

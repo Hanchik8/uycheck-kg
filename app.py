@@ -489,7 +489,7 @@ def main():
         sample_q = None
         if qc1.button("Ставки ГИК «Менин үйүм»?", use_container_width=True):
             sample_q = "Какие ставки и условия по ипотеке ГИК «Менин үйүм» для бюджетников и частного сектора?"
-        if qc2.button("Бишкекте батирге Кызыл китеп берилеби?", use_container_width=True):
+        if qc2.button("Батирге Кызыл китеп берилеби?", use_container_width=True):
             sample_q = "Бишкекте батирге Кызыл китеп берилеби? Кандай документтер керек?"
         if qc3.button("Tax on selling a flat in KR?", use_container_width=True):
             sample_q = "Do I pay income tax when selling an apartment in Kyrgyzstan within 1 year vs after 1 year?"
