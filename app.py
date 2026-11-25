@@ -435,9 +435,13 @@ def main():
                         "Because the text is unreliable, ML did not trust it for renovation classification."
                     )
 
+                # Save latest ML result in session so Tab 2 can also answer "Why this result?"!
+                st.session_state.last_ml_result = ml_res
+                st.session_state.last_ml_inputs = payload
+
                 # 3. Unified Integrated Response (ML + NLP + RAG together!)
                 with st.spinner("Combining ML valuation, NLP signals, and official KR legal documents..."):
-                    rag_res = rag_engine.answer_integrated(ml_res, nlp_res, question, payload)
+                    rag_res = rag_engine.answer_integrated(ml_res, nlp_res, question, payload, ad_text=ad_text)
 
                 st.subheader("Unified Assessment (ML + NLP + KR Legal RAG)")
                 st.markdown(f"<div class='answer-box'>{rag_res['answer']}</div>", unsafe_allow_html=True)
@@ -513,8 +517,31 @@ def main():
 
         if active_q:
             st.session_state.chat_history.append({"role": "user", "content": active_q})
-            with st.spinner("Searching verified KR documents..."):
-                ans = rag_engine.answer_question(active_q)
+            q_low = active_q.lower()
+            asks_why_price = any(
+                k in q_low for k in ["why this result", "why this price", "why did i get", "почему такая цена", "почему такой результат", "эмне үчүн мындай баа"]
+            )
+            if asks_why_price and st.session_state.get("last_ml_result"):
+                lr = st.session_state["last_ml_result"]
+                li = st.session_state.get("last_ml_inputs", {})
+                drivers_md = "\n".join(
+                    f"- **{d['label']}** (`{d['value']}`): **{d['usd_impact']:+,.0f}$**"
+                    for d in lr.get("top_drivers", [])[:6]
+                )
+                ans = {
+                    "status": "answered",
+                    "answer": (
+                        f"Your latest apartment estimate (**{li.get('district', '')}**, {li.get('area', '')} m², "
+                        f"{li.get('rooms', '')} rooms) is **${lr['fair_price_usd']:,.0f}** "
+                        f"(**${lr['fair_price_per_m2']:,.0f}/m²**), starting from the Bishkek baseline of "
+                        f"**${lr['base_market_usd']:,.0f}**.\n\n**Top input drivers (SHAP):**\n{drivers_md}"
+                    ),
+                    "sources": ["ML SHAP Explainer (Bishkek Real Estate LightGBM + CatBoost)"],
+                    "retrieved": [],
+                }
+            else:
+                with st.spinner("Searching verified KR documents..."):
+                    ans = rag_engine.answer_question(active_q)
             st.session_state.chat_history.append({
                 "role": "assistant",
                 "content": ans["answer"],

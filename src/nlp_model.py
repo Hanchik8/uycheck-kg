@@ -41,14 +41,14 @@ SIGNAL_PATTERNS = {
 }
 
 SARCASM_OR_ABSURD_PATTERNS = [
-    r"стен\w*\s+из\s+воздух",
-    r"walls\s+(made\s+)?of\s+air",
-    r"за\s+[0-9]\s*(сом|доллар|\$)",
-    r"for\s+\$?[0-9]\b",
+    r"стен\w*\s+из\s+воздух|без\s+стен|голый\s+бетон.*люкс|люкс.*без\s+стен",
+    r"walls\s+(made\s+)?of\s+air|flying\s+balcon|golden\s+toilet|trust\s+me\s+bro",
+    r"за\s+[0-9]\s*(сом|доллар|\$)|for\s+\$?[0-9]\b",
     r"на\s+луне|на\s+марсе|on\s+mars|on\s+the\s+moon",
     r"замок\s+дракон|дворец\s+.*\s+5\s+сом|palace\s+for\s+5",
+    r"крыша\s+теч[её]т|водопад|на\s+честном\s+слове|зато\s+душ\s+бесплатн|тарак\w*\s+в\s+подарок",
     r"\b1000%\b|бессмертн|immortal|сарказм|sarcasm|шутка|just\s+kidding|ахах|хаха|lol\b|лол\b",
-    r"totally\s+real|obviously\s+not|yeah\s+right|конечно\s+же\s+нет",
+    r"totally\s+(real|a\s+five[- ]star)|obviously\s+not|yeah\s+right|конечно\s+же\s+нет|oh\s+yeah",
     r"продам\s+гараж|пицц|погод|анекдот|котик|bitcoin|крипт",
 ]
 
@@ -196,6 +196,26 @@ class ListingNLPAnalyzer:
 
         low = clean.lower()
 
+        # Check gibberish (mostly meaningless tokens / low vowel ratio)
+        alpha_chars = re.findall(r"[A-Za-zА-Яа-яЁёӨөҮүҢң]", clean)
+        vowels = re.findall(r"[AEIOUYaeiouyАЕЁИОУЫЭЮЯаеёиоуыэюяӨөҮү]", clean)
+        vowel_ratio = (len(vowels) / len(alpha_chars)) if alpha_chars else 0.0
+        is_gibberish = (len(alpha_chars) >= 8 and (vowel_ratio < 0.16 or vowel_ratio > 0.85)) or bool(
+            re.search(r"asdf|qwerty|zxcv|фыва|йцук", low)
+        )
+
+        if is_gibberish:
+            return {
+                "predicted_condition": "unknown",
+                "display_condition": "Unclear / Gibberish input",
+                "confidence": 0.12,
+                "low_confidence": True,
+                "reason": "Input appears to be random characters or gibberish rather than a real apartment description.",
+                "signals": signals,
+                "domain_similarity": 0.0,
+                "top_probs": {},
+            }
+
         sarcasm_hit = any(re.search(pat, low, flags=re.IGNORECASE) for pat in SARCASM_OR_ABSURD_PATTERNS)
         has_euro = bool(re.search(r"евроремонт|дизайнерск|люкс|euro[- ]?renovat", low))
         has_shell = bool(re.search(r"\bпсо\b|под\s+самоотделк|не\s+достроен|без\s+стен|руин|unfinished|no\s+walls", low))
@@ -228,10 +248,14 @@ class ListingNLPAnalyzer:
             low_conf = True
             effective_conf = min(effective_conf, 0.34)
             reasons.append("Listing contains contradictory condition claims (e.g., both finished euro-renovation and unfinished/ПСО).")
-        if domain_sim < max(self.ood_threshold, 0.34) and not has_anchor:
+        if not has_anchor and domain_sim < max(self.ood_threshold, 0.62):
             low_conf = True
             effective_conf = min(effective_conf, 0.25)
             reasons.append("Text does not resemble a Bishkek apartment listing (out-of-domain input).")
+        elif domain_sim < 0.36:
+            low_conf = True
+            effective_conf = min(effective_conf, 0.30)
+            reasons.append("Low semantic similarity to real Bishkek apartment listings.")
         if top_prob < self.conf_threshold or entropy > 0.78:
             low_conf = True
             reasons.append("Model confidence is below the reliability threshold (0.55) — description is ambiguous.")
