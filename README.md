@@ -2,6 +2,8 @@
 
 **Team:** Nurlanov Azizkhan · Zhanybekov Nurdos · Abdilazizov Nurmukhamed  
 **Course:** Generative AI (Fall 2026) · Ala-Too International University  
+**Live App:** https://uycheck-kg.streamlit.app/  
+**Repository:** https://github.com/Hanchik8/uycheck-kg  
 
 **UyCheck KG** is an integrated Streamlit web application for Bishkek apartment buyers combining:
 1. **ML Price Valuation:** LightGBM + CatBoost ensemble on 8,821 real Bishkek apartments (`raimbekovm/bishkek-real-estate`, CC BY 4.0) with SHAP feature explanations and strict input validation.

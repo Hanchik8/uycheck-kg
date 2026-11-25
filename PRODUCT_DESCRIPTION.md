@@ -2,6 +2,8 @@
 
 **Team:** Nurlanov Azizkhan, Zhanybekov Nurdos, Abdilazizov Nurmukhamed  
 **Domain:** Residential Real Estate in Bishkek, Kyrgyzstan  
+**Live App URL:** https://uycheck-kg.streamlit.app/  
+**GitHub Repository:** https://github.com/Hanchik8/uycheck-kg  
 
 ## What UyCheck KG Does
 **UyCheck KG** helps homebuyers in Bishkek evaluate apartment listings before negotiating or paying a deposit by combining three AI modules in one Streamlit web app:
