@@ -127,17 +127,17 @@ def plot_shap_bars(drivers):
     vals = [d["usd_impact"] for d in drivers][::-1]
     colors = ["#1F2226" if v >= 0 else "#7B8088" for v in vals]
 
-    fig, ax = plt.subplots(figsize=(6.4, 3.2), dpi=180, facecolor="#FFFFFF")
+    fig, ax = plt.subplots(figsize=(6.8, 3.4), dpi=180, facecolor="#FFFFFF")
     ax.set_facecolor("#FFFFFF")
     y = np.arange(len(labels))
     bars = ax.barh(y, vals, color=colors, height=0.56)
     ax.axvline(0, color="#1F2226", linewidth=0.9)
 
     max_abs = max([abs(v) for v in vals] + [2000])
-    ax.set_xlim(-max_abs * 1.38, max_abs * 1.38)
+    ax.set_xlim(-max_abs * 1.62, max_abs * 1.55)
 
     for bar, v in zip(bars, vals):
-        offset = max_abs * 0.04 if v >= 0 else -max_abs * 0.04
+        offset = max_abs * 0.05 if v >= 0 else -max_abs * 0.05
         ha = "left" if v >= 0 else "right"
         ax.text(
             v + offset,
@@ -145,7 +145,7 @@ def plot_shap_bars(drivers):
             f"{v:+,.0f}$",
             va="center",
             ha=ha,
-            fontsize=8.4,
+            fontsize=8.3,
             fontweight="bold",
             color="#1F2226",
         )
@@ -155,9 +155,9 @@ def plot_shap_bars(drivers):
     ax.xaxis.set_visible(False)
     for sp in ["top", "right", "bottom", "left"]:
         ax.spines[sp].set_visible(False)
-    ax.tick_params(axis="y", length=0, pad=5)
+    ax.tick_params(axis="y", length=0, pad=8)
     ax.set_title("Top Feature Impacts on Price Estimate (SHAP, USD)", loc="left", fontsize=9.8, fontweight="bold", color="#1F2226", pad=8)
-    plt.tight_layout()
+    plt.subplots_adjust(left=0.35, right=0.97, top=0.88, bottom=0.05)
     return fig
 
 
@@ -501,33 +501,27 @@ def main():
                 st.markdown(turn["content"])
                 if turn.get("sources"):
                     st.caption("Verified sources: " + " · ".join(turn["sources"][:3]))
+                if turn.get("retrieved"):
+                    with st.expander("View exact retrieved excerpts"):
+                        for ch in turn["retrieved"]:
+                            st.markdown(f"**{ch['doc_id']}** ({ch['section']}) — score `{ch['hybrid_score']:.3f}`")
+                            st.markdown(ch["text"])
+                            st.divider()
 
         user_msg = st.chat_input("Ask any question in Russian, Kyrgyz, or English...")
         active_q = sample_q or user_msg
 
         if active_q:
             st.session_state.chat_history.append({"role": "user", "content": active_q})
-            with st.chat_message("user"):
-                st.markdown(active_q)
-            with st.chat_message("assistant"):
-                with st.spinner("Searching verified KR documents..."):
-                    ans = rag_engine.answer_question(active_q)
-                st.markdown(ans["answer"])
-                if ans.get("sources"):
-                    st.caption("Verified sources: " + " · ".join(ans["sources"][:3]))
-                if ans.get("retrieved") and ans["status"] == "answered":
-                    with st.expander("View exact retrieved excerpts"):
-                        for ch in ans["retrieved"][:3]:
-                            st.markdown(f"**{ch['doc_id']}** ({ch['section']}) — score `{ch['hybrid_score']:.3f}`")
-                            st.markdown(ch["text"])
-                            st.divider()
+            with st.spinner("Searching verified KR documents..."):
+                ans = rag_engine.answer_question(active_q)
             st.session_state.chat_history.append({
                 "role": "assistant",
                 "content": ans["answer"],
                 "sources": ans.get("sources", []),
+                "retrieved": ans.get("retrieved", [])[:3] if ans["status"] == "answered" else [],
             })
-            if sample_q:
-                st.rerun()
+            st.rerun()
 
         if st.session_state.chat_history:
             if st.button("Clear chat history"):
@@ -542,28 +536,25 @@ def main():
         m_ml = ml_predictor.metrics
         m_nlp = nlp_analyzer.metrics
 
-        c_left, c_right = st.columns(2, gap="large")
-        with c_left:
-            st.markdown("**ML Price Regression — Bishkek Real Estate (8,821 raw / " + f"{m_ml['clean_rows']:,} clean rows)**")
-            rows_tbl = [
-                {"Model": "Baseline 1: Global Median", **m_ml["baselines"]["global_median"]},
-                {"Model": "Baseline 2: Ridge Regression", **m_ml["baselines"]["ridge_regression"]},
-                {"Model": "LightGBM Regressor", **m_ml["models"]["lightgbm"]},
-                {"Model": "CatBoost Regressor", **m_ml["models"]["catboost"]},
-                {"Model": "Final Ensemble (50% LGB + 50% CB)", **m_ml["models"]["ensemble_lgb_cb"]},
-            ]
-            st.dataframe(rows_tbl, use_container_width=True, hide_index=True)
+        st.markdown("**ML Price Regression — Bishkek Real Estate (8,821 raw / " + f"{m_ml['clean_rows']:,} clean rows)**")
+        rows_tbl = [
+            {"Model": "Baseline 1: Global Median", "MAE ($)": m_ml["baselines"]["global_median"]["mae_usd"], "RMSE ($)": m_ml["baselines"]["global_median"]["rmse_usd"], "MAPE (%)": m_ml["baselines"]["global_median"]["mape_pct"], "R²": m_ml["baselines"]["global_median"]["r2"]},
+            {"Model": "Baseline 2: Ridge Regression", "MAE ($)": m_ml["baselines"]["ridge_regression"]["mae_usd"], "RMSE ($)": m_ml["baselines"]["ridge_regression"]["rmse_usd"], "MAPE (%)": m_ml["baselines"]["ridge_regression"]["mape_pct"], "R²": m_ml["baselines"]["ridge_regression"]["r2"]},
+            {"Model": "LightGBM Regressor", "MAE ($)": m_ml["models"]["lightgbm"]["mae_usd"], "RMSE ($)": m_ml["models"]["lightgbm"]["rmse_usd"], "MAPE (%)": m_ml["models"]["lightgbm"]["mape_pct"], "R²": m_ml["models"]["lightgbm"]["r2"]},
+            {"Model": "CatBoost Regressor", "MAE ($)": m_ml["models"]["catboost"]["mae_usd"], "RMSE ($)": m_ml["models"]["catboost"]["rmse_usd"], "MAPE (%)": m_ml["models"]["catboost"]["mape_pct"], "R²": m_ml["models"]["catboost"]["r2"]},
+            {"Model": "Final Ensemble (50% LGB + 50% CB)", "MAE ($)": m_ml["models"]["ensemble_lgb_cb"]["mae_usd"], "RMSE ($)": m_ml["models"]["ensemble_lgb_cb"]["rmse_usd"], "MAPE (%)": m_ml["models"]["ensemble_lgb_cb"]["mape_pct"], "R²": m_ml["models"]["ensemble_lgb_cb"]["r2"]},
+        ]
+        st.dataframe(rows_tbl, use_container_width=True, hide_index=True)
 
-        with c_right:
-            st.markdown(f"**NLP Multilingual Listing Classifier ({m_nlp['total_labeled_texts']:,} RU/KG descriptions)**")
-            st.markdown(
-                f"- **Encoder:** `{m_nlp['embed_model']}`\n"
-                f"- **Test Accuracy:** `{m_nlp['test_accuracy']:.1%}`\n"
-                f"- **Test Weighted F1:** `{m_nlp['test_weighted_f1']:.3f}` · **Macro F1:** `{m_nlp['test_macro_f1']:.3f}`\n"
-                f"- **Low-Confidence Threshold:** `{m_nlp['confidence_threshold']}` · **OOD Similarity Cutoff:** `{m_nlp['ood_similarity_threshold']}`\n"
-                f"- **RAG Corpus:** `{rag_engine.num_docs}` official KR documents (`{len(rag_engine.chunks)}` indexed sections)\n"
-                f"- **LLM Status:** `{'Connected (' + rag_engine.llm_model + ')' if rag_engine.client else 'Offline Grounded Fallback'}`"
-            )
+        st.markdown(f"**NLP Multilingual Listing Classifier ({m_nlp['total_labeled_texts']:,} RU/KG descriptions) & RAG Status**")
+        st.markdown(
+            f"- **Encoder & Features:** `{m_nlp['features']}`\n"
+            f"- **Test Accuracy:** `{m_nlp['test_accuracy']:.1%}` (vs. `{m_nlp['baseline_majority_accuracy']:.1%}` majority baseline)\n"
+            f"- **Test Weighted F1:** `{m_nlp['test_weighted_f1']:.3f}` · **Macro F1:** `{m_nlp['test_macro_f1']:.3f}`\n"
+            f"- **Low-Confidence Threshold:** `{m_nlp['confidence_threshold']}` · **OOD Similarity Cutoff:** `{m_nlp['ood_similarity_threshold']}`\n"
+            f"- **RAG Corpus:** `{rag_engine.num_docs}` official KR documents (`{len(rag_engine.chunks)}` indexed sections) · **20/20** eval benchmark\n"
+            f"- **LLM Status:** `{'Connected (' + rag_engine.llm_model + ')' if rag_engine.client else 'Offline Grounded Fallback'}`"
+        )
 
         st.markdown("**Data Source & License:** `raimbekovm/bishkek-real-estate` (Hugging Face, **CC BY 4.0**). Zero PII — listing IDs, URLs, and contact fields removed before training.")
 

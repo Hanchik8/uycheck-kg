@@ -51,14 +51,31 @@ DOMAIN_CUES = (
 
 
 def detect_language(text: str) -> str:
-    """Detect user query language: 'ky', 'ru', or 'en'."""
-    t = text or ""
-    if re.search(r"[ӨөҮүҢң]", t) or re.search(
-        r"\b(салам|канча|кандай|батир|турак\s+жай|кызыл\s+китеп|берилеби|керек|болобу|менин\s+үйүм|салык|каттоо)\b",
-        t.lower(),
-    ):
+    """Detect user query language ('ky', 'ru', or 'en'), ignoring Kyrgyz proper nouns used in Russian."""
+    t = (text or "").strip()
+    low = t.lower()
+    # Remove proper nouns ("Менин үйүм", "Түндүк") that appear inside Russian sentences!
+    cleaned = re.sub(r"менин\s+үйүм|түндүк", " ", low)
+
+    ky_words = re.findall(
+        r"\b(салам|канча|кандай|батир\w*|турак\s+жай|кызыл\s+китеп|берилеби|керек|болобу|"
+        r"үчүн|менен|жөнүндө|салык\w*|каттоо\w*|жаран\w*|иштеген\w*|айтып|болот|жок|ооба|эмеспи)\b",
+        cleaned,
+    )
+    ru_words = re.findall(
+        r"\b(можно|ли|какие|какой|какая|сколько|нужно|надо|если|при|для|что|или|как|где|"
+        r"квартира|квартиру|квартиры|купить|продать|налог|ставка|риски|проверь|объясни|адекватная|ли)\b",
+        cleaned,
+    )
+    has_ky_letters = bool(re.search(r"[өүң]", cleaned))
+
+    if has_ky_letters and len(ky_words) >= len(ru_words):
         return "ky"
-    if re.search(r"[А-Яа-яЁё]", t):
+    if len(ky_words) >= 2 and len(ky_words) > len(ru_words):
+        return "ky"
+    if has_ky_letters and len(ru_words) == 0:
+        return "ky"
+    if re.search(r"[а-яё]", low):
         return "ru"
     return "en"
 
@@ -302,7 +319,7 @@ class KyrgyzRealEstateRAG:
         )
         user_prompt = f"Verified Sources:\n{context_str}\n\nUser Question:\n{q}"
 
-        llm_reply = self._call_llm(sys_prompt, user_prompt, max_tokens=420)
+        llm_reply = self._call_llm(sys_prompt, user_prompt, max_tokens=900)
 
         if llm_reply and "NOT_IN_SOURCES" in llm_reply:
             return {
@@ -441,7 +458,7 @@ class KyrgyzRealEstateRAG:
             f"=== USER QUESTION ===\n{q or 'Give a complete buyer assessment combining price fairness, listing signals, and KR legal/mortgage checklist.'}"
         )
 
-        llm_reply = self._call_llm(sys_prompt, user_prompt, max_tokens=560)
+        llm_reply = self._call_llm(sys_prompt, user_prompt, max_tokens=1100)
         if not llm_reply:
             llm_reply = (
                 f"**ML:** {ml_summary}\n\n"
