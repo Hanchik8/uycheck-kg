@@ -1,0 +1,73 @@
+{
+  "seed": 42,
+  "embed_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "features": "Multilingual MiniLM (384-d) + TF-IDF (8,000 word 1-2 grams)",
+  "total_labeled_texts": 7023,
+  "train_texts": 5618,
+  "test_texts": 1405,
+  "classes": [
+    "евроремонт",
+    "под самоотделку (псо)",
+    "хорошее",
+    "среднее",
+    "не достроено"
+  ],
+  "class_counts": {
+    "евроремонт": 3020,
+    "под самоотделку (псо)": 2519,
+    "хорошее": 1044,
+    "среднее": 300,
+    "не достроено": 140
+  },
+  "baseline_majority_accuracy": 0.4299,
+  "test_accuracy": 0.7929,
+  "test_macro_f1": 0.562,
+  "test_weighted_f1": 0.7791,
+  "confidence_threshold": 0.55,
+  "ood_similarity_threshold": 0.5629,
+  "classification_report": {
+    "евроремонт": {
+      "precision": 0.791476407914764,
+      "recall": 0.8609271523178808,
+      "f1-score": 0.8247422680412371,
+      "support": 604.0
+    },
+    "не достроено": {
+      "precision": 0.5,
+      "recall": 0.10714285714285714,
+      "f1-score": 0.17647058823529413,
+      "support": 28.0
+    },
+    "под самоотделку (псо)": {
+      "precision": 0.8956356736242884,
+      "recall": 0.9365079365079365,
+      "f1-score": 0.915615906886518,
+      "support": 504.0
+    },
+    "среднее": {
+      "precision": 0.7894736842105263,
+      "recall": 0.25,
+      "f1-score": 0.379746835443038,
+      "support": 60.0
+    },
+    "хорошее": {
+      "precision": 0.5306122448979592,
+      "recall": 0.49760765550239233,
+      "f1-score": 0.5135802469135803,
+      "support": 209.0
+    },
+    "accuracy": 0.79288256227758,
+    "macro avg": {
+      "precision": 0.7014396021295075,
+      "recall": 0.5304371202942133,
+      "f1-score": 0.5620311691039335,
+      "support": 1405.0
+    },
+    "weighted avg": {
+      "precision": 0.7841412883441023,
+      "recall": 0.79288256227758,
+      "f1-score": 0.7791309645336805,
+      "support": 1405.0
+    }
+  }
+}

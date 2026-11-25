@@ -1,0 +1,15 @@
+streamlit>=1.38.0
+pandas>=2.2.0
+numpy>=1.26.0
+scikit-learn>=1.5.0
+lightgbm>=4.5.0
+catboost>=1.2.7
+shap>=0.46.0
+sentence-transformers>=3.0.0
+rank-bm25>=0.2.2
+openai>=1.50.0
+python-dotenv>=1.0.1
+matplotlib>=3.9.0
+joblib>=1.4.0
+huggingface-hub>=0.25.0
+nbformat>=5.10.0

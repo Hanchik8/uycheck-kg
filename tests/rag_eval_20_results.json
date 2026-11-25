@@ -1,0 +1,281 @@
+{
+  "total": 20,
+  "passed": 20,
+  "accuracy_pct": 100.0,
+  "results": [
+    {
+      "id": 1,
+      "language": "ru",
+      "in_scope": true,
+      "question": "Какая процентная ставка по программе Доступная ипотека ГИК для работников частного сектора и какой первоначальный взнос?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "04_gik_affordable_mortgage_8pct.md (Условия «Доступной ипотеки» для частного сектора)",
+        "02_gik_social_mortgage_4pct.md (Условия финансирования)"
+      ],
+      "answer_preview": "Согласно предоставленным источникам, по программе «Доступная ипотека» ГИК для работников частного сектора:  - **Процентная ставка:** 8% годовых. - **Первоначальный взнос:** от 20% стоимости приобретаемого жилья.  **Источники:** [Source 1: 04_gik_affordable_mor"
+    },
+    {
+      "id": 2,
+      "language": "ru",
+      "in_scope": true,
+      "question": "Выдаётся ли Красная книга на отдельную квартиру в многоэтажном доме в Бишкеке?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "12_cadastre_techpassport_vs_redbook.md (Главное заблуждение покупателей: выдаётся ли «Красная книга» на квартиру?)",
+        "12_cadastre_techpassport_vs_redbook.md (Три главных документа на готовую квартиру в Кыргызстане)"
+      ],
+      "answer_preview": "Нет, «Красная книга» (Государственный акт о праве частной собственности на земельный участок) **не выдаётся** на отдельную квартиру в многоквартирном доме. Она выдаётся исключительно на земельные участки (ИЖС, частные дома, дачи, коммерческие участки или участ"
+    },
+    {
+      "id": 3,
+      "language": "ru",
+      "in_scope": true,
+      "question": "Сколько лет нельзя продавать своё жильё перед подачей заявки в ГИК «Менин үйүм»?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "01_gik_menin_uyum_eligibility.md (Раздел 2. Правило отсутствия собственного жилья и запрет на сделки за 3 года)",
+        "04_gik_affordable_mortgage_8pct.md (Долевое строительство и накопительный механизм ГИК)"
+      ],
+      "answer_preview": "Согласно предоставленным источникам, за последние **3 года** до даты подачи заявки у заявителя и его супруга(и) не должно быть фактов отчуждения (продажи, дарения, мены) собственного жилого имущества.  **Источники:**   [Source 1: 01_gik_menin_uyum_eligibility."
+    },
+    {
+      "id": 4,
+      "language": "ru",
+      "in_scope": true,
+      "question": "Какой минимальный трудовой стаж нужен для участия в программе ГИК «Менин үйүм»?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "03_gik_preferential_mortgage_4pct.md (Требования к стажу и жилью)",
+        "01_gik_menin_uyum_eligibility.md (Раздел 1. Базовые критерии отбора участников)"
+      ],
+      "answer_preview": "Согласно предоставленным источникам, для участия в программе ГИК «Менин үйүм» необходимо соответствовать одному из следующих требований по трудовому стажу:  - Общий подтверждённый трудовой стаж не менее **2 лет**; - Либо непрерывный стаж работы на текущем мест"
+    },
+    {
+      "id": 5,
+      "language": "ru",
+      "in_scope": true,
+      "question": "Под какой процент бюджетники (врачи и учителя) могут получить ипотеку ГИК?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "04_gik_affordable_mortgage_8pct.md (Долевое строительство и накопительный механизм ГИК)",
+        "03_gik_preferential_mortgage_4pct.md (Кто может участвовать в Льготной ипотеке)"
+      ],
+      "answer_preview": "Согласно предоставленным источникам, работники бюджетной сферы (включая врачей и учителей) могут получить ипотеку ГИК по двум программам:  1. **«Льготная ипотека»** — **4% годовых** (направление для бюджетников). 2. **«Социальная ипотека»** — также **4% годовы"
+    },
+    {
+      "id": 6,
+      "language": "ru",
+      "in_scope": true,
+      "question": "Кто имеет право на Социальную ипотеку ГИК под 4%?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "02_gik_social_mortgage_4pct.md (Категории граждан, имеющие право на Социальную ипотеку)",
+        "04_gik_affordable_mortgage_8pct.md (Условия «Доступной ипотеки» для частного сектора)"
+      ],
+      "answer_preview": "На Социальную ипотеку ГИК (4% годовых) имеют право следующие категории граждан:  1. Многодетные семьи, воспитывающие **5 и более несовершеннолетних детей**, а также матери, награждённые орденом «Баатыр эне». 2. Лица с ограниченными возможностями здоровья (инва"
+    },
+    {
+      "id": 7,
+      "language": "ru",
+      "in_scope": true,
+      "question": "С какого момента покупатель квартиры становится её законным собственником по Закону КР № 153?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "13_notary_and_purchase_steps_kr.md (Этап 3. Регистрация в ГУ «Кадастр»)",
+        "08_law153_encumbrances_and_extracts.md (Статья 17 и порядок проверки юридической чистоты объекта)"
+      ],
+      "answer_preview": "Согласно Закону КР № 153, покупатель становится законным собственником квартиры **только с момента государственной регистрации перехода права собственности в органах ГУ «Кадастр»**. Подписание договора у нотариуса или передача денег сами по себе не делают поку"
+    },
+    {
+      "id": 8,
+      "language": "ru",
+      "in_scope": true,
+      "question": "Как проверить, нет ли на квартире ареста или банковского залога перед покупкой?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "08_law153_encumbrances_and_extracts.md (Что показывает выписка из реестра)",
+        "11_housing_code_117_redevelopment_rules.md (Риски для покупателя квартиры в Бишкеке)"
+      ],
+      "answer_preview": "Для проверки наличия ареста или банковского залога на квартире перед покупкой необходимо заказать **Выписку из Единого государственного реестра прав на недвижимое имущество** (справку об отсутствии обременений). Эта выписка покажет:  - **Аресты и запрещения** "
+    },
+    {
+      "id": 9,
+      "language": "ru",
+      "in_scope": true,
+      "question": "Зачем регистрировать договор долевого участия (ДДУ) в ГУ «Кадастр»?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "14_ddu_shared_construction_risks_kr.md (Особенность рынка новостроек (ПСО / ДДУ) в Кыргызстане)",
+        "14_ddu_shared_construction_risks_kr.md (Обязательный чек-лист проверки застройщика до оплаты)"
+      ],
+      "answer_preview": "Регистрация договора долевого участия (ДДУ) в ГУ «Кадастр» необходима, чтобы защитить покупателя от **«двойных продаж»** одной и той же квартиры разным людям. Именно штамп ГУ «Кадастр» на договоре является официальной фиксацией ваших прав на конкретную квартир"
+    },
+    {
+      "id": 10,
+      "language": "ru",
+      "in_scope": true,
+      "question": "Нужно ли платить подоходный налог при продаже квартиры в Кыргызстане, если владел ею 2 года?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "15_tax_code_kr_capital_gains_1year.md (Главное правило: срок владения 1 год)",
+        "15_tax_code_kr_capital_gains_1year.md (Наследование, дарение и сроки отчётности)"
+      ],
+      "answer_preview": "Нет, подоходный налог при продаже квартиры не уплачивается, если вы владели ею более 1 года (в вашем случае — 2 года). Ставка налога составляет 0% независимо от суммы сделки.  **Источники:**   [Source 1: 15_tax_code_kr_capital_gains_1year.md | Главное правило:"
+    },
+    {
+      "id": 11,
+      "language": "ru",
+      "in_scope": true,
+      "question": "Какой налог нужно заплатить, если продал квартиру в Бишкеке через 6 месяцев после покупки с прибылью?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "15_tax_code_kr_capital_gains_1year.md (Как рассчитывается налог 10%)",
+        "16_tax_code_kr_property_tax_80sqm.md (Порядок расчёта налога)"
+      ],
+      "answer_preview": "Согласно предоставленным источникам, при продаже квартиры в Бишкеке через 6 месяцев после покупки с прибылью необходимо уплатить **подоходный налог в размере 10% от чистой прибыли**.  Налог рассчитывается по формуле:   `Налог = (Цена продажи − Цена покупки − П"
+    },
+    {
+      "id": 12,
+      "language": "ru",
+      "in_scope": true,
+      "question": "Какая площадь квартиры в Бишкеке не облагается ежегодным налогом на имущество?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "16_tax_code_kr_property_tax_80sqm.md (Необлагаемая (льготная) площадь в Бишкеке)",
+        "16_tax_code_kr_property_tax_80sqm.md (Порядок расчёта налога)"
+      ],
+      "answer_preview": "Согласно статье 409 Налогового кодекса КР, для квартир в Бишкеке от налога на имущество освобождается площадь **до 80 квадратных метров**.  **Источники:** Source 1 (16_tax_code_kr_property_tax_80sqm.md, раздел «Необлагаемая (льготная) площадь в Бишкеке»)."
+    },
+    {
+      "id": 13,
+      "language": "ru",
+      "in_scope": true,
+      "question": "Нужно ли согласие супруга при продаже квартиры, купленной в браке?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "13_notary_and_purchase_steps_kr.md (Этап 2. Нотариальное удостоверение договора купли-продажи)",
+        "15_tax_code_kr_capital_gains_1year.md (Главное правило: срок владения 1 год)"
+      ],
+      "answer_preview": "Да, согласие супруга (супруги) при продаже квартиры, приобретённой в период официального брака, **обязательно**. Оно должно быть нотариально заверено. Без такого согласия сделку можно оспорить в суде.  **Источники:**   [Source 1: 13_notary_and_purchase_steps_k"
+    },
+    {
+      "id": 14,
+      "language": "ru",
+      "in_scope": true,
+      "question": "Можно ли получить ипотеку по программе KfW («Ашар» или «Кут-конуш») для покупки квартиры в Бишкеке?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "06_gik_kfw_regional_programs.md (География и назначение программ)",
+        "06_gik_kfw_regional_programs.md (Основные параметры финансирования)"
+      ],
+      "answer_preview": "Нет, по программам KfW («Ашар» или «Кут-конуш») ипотеку для покупки квартиры в Бишкеке получить нельзя. Эти программы предназначены только для жителей **регионов Кыргызстана (за исключением городов Бишкек и Ош)**. Для жителей Бишкека действуют основные направл"
+    },
+    {
+      "id": 15,
+      "language": "en",
+      "in_scope": true,
+      "question": "How do citizens submit an application for the GIK Menin Uyum mortgage in Kyrgyzstan?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "05_gik_application_tunduk_portal.md (Пошаговая инструкция подачи заявки)",
+        "01_gik_menin_uyum_eligibility.md (Раздел 2. Правило отсутствия собственного жилья и запрет на сделки за 3 года)"
+      ],
+      "answer_preview": "According to the provided sources, citizens submit an application for the GIK \"Менин үйүм\" mortgage through a fully digital process:  1. **Online Registration:** The citizen registers and fills out an electronic application on the official portal of OJSC \"GIK\""
+    },
+    {
+      "id": 16,
+      "language": "en",
+      "in_scope": true,
+      "question": "What documents should a buyer check before paying for an unfinished DDU apartment in Bishkek?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "14_ddu_shared_construction_risks_kr.md (Обязательный чек-лист проверки застройщика до оплаты)",
+        "13_notary_and_purchase_steps_kr.md (Этап 1. Проверка до внесения задатка)"
+      ],
+      "answer_preview": "Based solely on the provided sources, before paying for an unfinished DDU apartment in Bishkek, a buyer should check the following documents:  1. **State Registry of Construction Projects:** Verify that the residential complex (and specific block/story) is lis"
+    },
+    {
+      "id": 17,
+      "language": "ky",
+      "in_scope": true,
+      "question": "ГИК «Менин үйүм» аркылуу жеке сектордо иштегендерге ипотека канча пайыз менен берилет?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "17_kyrgyz_guide_gik_and_cadastre_kg.md (1. ГИК «Менин үйүм» ипотекасынын негизги шарттары)",
+        "02_gik_social_mortgage_4pct.md (Условия финансирования)"
+      ],
+      "answer_preview": "ГИК «Менин үйүм» аркылуу жеке сектордо иштеген жарандарга **жылдык 8%** менен «Жеткиликтүү ипотека» берилет. Негизги шарттары: мөөнөтү 25 жылга чейин, баштапкы төлөмү 20%дан жогору.  Sources:   - Source 1: 17_kyrgyz_guide_gik_and_cadastre_kg.md | 1. ГИК «Менин"
+    },
+    {
+      "id": 18,
+      "language": "ky",
+      "in_scope": true,
+      "question": "Бишкекте батирге «Кызыл китеп» берилеби?",
+      "status": "answered",
+      "passed": true,
+      "source_hit": true,
+      "sources": [
+        "17_kyrgyz_guide_gik_and_cadastre_kg.md (2. Батир сатып алуудагы коопсуздук жана ГУ «Кадастр»)",
+        "07_law153_state_registration_basics.md (Момент возникновения права собственности)"
+      ],
+      "answer_preview": "Жок, Бишкекте батирге «Кызыл китеп» берилбейт. «Кызыл китеп» (Мамлекеттик акт) жер тилкесине гана берилет. Батирдин негизги документтери: укук белгилөөчү документ (сатып алуу-сатуу келишими), Техникалык паспорт жана ГУ «Кадастр» реестриндеги каттоо.  Эскертүү:"
+    },
+    {
+      "id": 19,
+      "language": "en",
+      "in_scope": false,
+      "question": "What is the mortgage interest rate for first-time buyers in Almaty, Kazakhstan under the 7-20-25 program?",
+      "status": "out_of_scope",
+      "passed": true,
+      "source_hit": true,
+      "sources": [],
+      "answer_preview": "I don't know — this information is not covered in my verified Kyrgyz Republic real estate document base (GIK KR, Law No. 153, Housing Code No. 117, GU Cadastre, KR Tax Code). I will not invent an answer outside the verified documents."
+    },
+    {
+      "id": 20,
+      "language": "ru",
+      "in_scope": false,
+      "question": "Сколько стоит квадратный метр коммерческого склада в Токио и какие там налоги на землю?",
+      "status": "out_of_scope",
+      "passed": true,
+      "source_hit": true,
+      "sources": [],
+      "answer_preview": "Я не знаю точного ответа: эта информация отсутствует в моей проверенной базе документов по недвижимости Кыргызстана (ГИК КР, Закон № 153, Жилищный кодекс № 117, ГУ «Кадастр», Налоговый кодекс КР). Я не придумываю ответы без опоры на официальные источники."
+    }
+  ]
+}

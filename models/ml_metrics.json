@@ -1,0 +1,41 @@
+{
+  "seed": 42,
+  "total_raw_rows": 8821,
+  "clean_rows": 8758,
+  "train_rows": 7006,
+  "test_rows": 1752,
+  "baselines": {
+    "global_median": {
+      "mae_usd": 50382.0,
+      "rmse_usd": 84169.7,
+      "mape_pct": 37.75,
+      "r2": -0.0958
+    },
+    "ridge_regression": {
+      "mae_usd": 20578.7,
+      "rmse_usd": 58006.3,
+      "mape_pct": 13.57,
+      "r2": 0.4796
+    }
+  },
+  "models": {
+    "lightgbm": {
+      "mae_usd": 11929.5,
+      "rmse_usd": 21875.0,
+      "mape_pct": 8.84,
+      "r2": 0.926
+    },
+    "catboost": {
+      "mae_usd": 12779.8,
+      "rmse_usd": 23032.8,
+      "mape_pct": 9.41,
+      "r2": 0.9179
+    },
+    "ensemble_lgb_cb": {
+      "mae_usd": 12113.6,
+      "rmse_usd": 21997.7,
+      "mape_pct": 8.93,
+      "r2": 0.9252
+    }
+  }
+}

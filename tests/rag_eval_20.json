@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "language": "ru",
+    "in_scope": true,
+    "question": "Какая процентная ставка по программе Доступная ипотека ГИК для работников частного сектора и какой первоначальный взнос?",
+    "expected_keywords": ["8%", "20%", "25"],
+    "expected_source": "04_gik_affordable_mortgage_8pct.md",
+    "reference_answer": "По программе «Доступная ипотека» ГИК ставка составляет 8% годовых на срок до 25 лет, первоначальный взнос — от 20% стоимости жилья."
+  },
+  {
+    "id": 2,
+    "language": "ru",
+    "in_scope": true,
+    "question": "Выдаётся ли Красная книга на отдельную квартиру в многоэтажном доме в Бишкеке?",
+    "expected_keywords": ["не выда", "земельн", "техпаспорт"],
+    "expected_source": "12_cadastre_techpassport_vs_redbook.md",
+    "reference_answer": "Нет, «Красная книга» выдаётся только на земельные участки. Для квартиры основными документами являются правоустанавливающий документ, технический паспорт и запись в реестре ГУ «Кадастр»."
+  },
+  {
+    "id": 3,
+    "language": "ru",
+    "in_scope": true,
+    "question": "Сколько лет нельзя продавать своё жильё перед подачей заявки в ГИК «Менин үйүм»?",
+    "expected_keywords": ["3 год", "3 лет", "отчужд"],
+    "expected_source": "01_gik_menin_uyum_eligibility.md",
+    "reference_answer": "За последние 3 года до подачи заявки у заявителя и его супруга(и) не должно быть фактов отчуждения (продажи или дарения) собственного жилья."
+  },
+  {
+    "id": 4,
+    "language": "ru",
+    "in_scope": true,
+    "question": "Какой минимальный трудовой стаж нужен для участия в программе ГИК «Менин үйүм»?",
+    "expected_keywords": ["2", "1 год"],
+    "expected_source": "01_gik_menin_uyum_eligibility.md",
+    "reference_answer": "Нужен общий трудовой стаж не менее 2 лет либо непрерывный стаж на текущем месте работы не менее 1 года."
+  },
+  {
+    "id": 5,
+    "language": "ru",
+    "in_scope": true,
+    "question": "Под какой процент бюджетники (врачи и учителя) могут получить ипотеку ГИК?",
+    "expected_keywords": ["4%", "25"],
+    "expected_source": "03_gik_preferential_mortgage_4pct.md",
+    "reference_answer": "Работники бюджетной сферы (врачи, учителя, госслужащие) могут получить Льготную ипотеку ГИК под 4% годовых на срок до 25 лет."
+  },
+  {
+    "id": 6,
+    "language": "ru",
+    "in_scope": true,
+    "question": "Кто имеет право на Социальную ипотеку ГИК под 4%?",
+    "expected_keywords": ["многодет", "5", "инвалид"],
+    "expected_source": "02_gik_social_mortgage_4pct.md",
+    "reference_answer": "Многодетные семьи (от 5 несовершеннолетних детей), матери «Баатыр эне», лица с инвалидностью и их опекуны, одинокие родители, вдовы/вдовцы, молодые специалисты в сельской местности (до 35 лет) и выпускники детдомов."
+  },
+  {
+    "id": 7,
+    "language": "ru",
+    "in_scope": true,
+    "question": "С какого момента покупатель квартиры становится её законным собственником по Закону КР № 153?",
+    "expected_keywords": ["регистрац", "кадастр", "153"],
+    "expected_source": "07_law153_state_registration_basics.md",
+    "reference_answer": "По Закону КР № 153 право собственности возникает только с момента государственной регистрации перехода права в ГУ «Кадастр», а не после одного подписания договора у нотариуса."
+  },
+  {
+    "id": 8,
+    "language": "ru",
+    "in_scope": true,
+    "question": "Как проверить, нет ли на квартире ареста или банковского залога перед покупкой?",
+    "expected_keywords": ["выписк", "кадастр", "түндүк"],
+    "expected_source": "08_law153_encumbrances_and_extracts.md",
+    "reference_answer": "Необходимо заказать выписку из Единого государственного реестра прав в ГУ «Кадастр», ЦОН или онлайн через портал/приложение «Түндүк»."
+  },
+  {
+    "id": 9,
+    "language": "ru",
+    "in_scope": true,
+    "question": "Зачем регистрировать договор долевого участия (ДДУ) в ГУ «Кадастр»?",
+    "expected_keywords": ["двойн", "кадастр", "штамп"],
+    "expected_source": "14_ddu_shared_construction_risks_kr.md",
+    "reference_answer": "Государственная регистрация ДДУ в ГУ «Кадастр» защищает покупателя от «двойных продаж» одной квартиры разным людям."
+  },
+  {
+    "id": 10,
+    "language": "ru",
+    "in_scope": true,
+    "question": "Нужно ли платить подоходный налог при продаже квартиры в Кыргызстане, если владел ею 2 года?",
+    "expected_keywords": ["0%", "1 год", "не уплач"],
+    "expected_source": "15_tax_code_kr_capital_gains_1year.md",
+    "reference_answer": "Нет, при владении квартирой более 1 года подоходный налог при продаже не уплачивается (0%)."
+  },
+  {
+    "id": 11,
+    "language": "ru",
+    "in_scope": true,
+    "question": "Какой налог нужно заплатить, если продал квартиру в Бишкеке через 6 месяцев после покупки с прибылью?",
+    "expected_keywords": ["10%", "прибыл", "sti-100"],
+    "expected_source": "15_tax_code_kr_capital_gains_1year.md",
+    "reference_answer": "При владении 1 год и менее платится подоходный налог 10% с чистой прибыли (разницы между ценой продажи и покупки за вычетом подтверждённых расходов на ремонт), декларация STI-100 подаётся до 1 мая."
+  },
+  {
+    "id": 12,
+    "language": "ru",
+    "in_scope": true,
+    "question": "Какая площадь квартиры в Бишкеке не облагается ежегодным налогом на имущество?",
+    "expected_keywords": ["80", "409", "одн"],
+    "expected_source": "16_tax_code_kr_property_tax_80sqm.md",
+    "reference_answer": "По статье 409 Налогового кодекса КР от налога освобождается площадь до 80 кв. м на один жилой объект (если квартира не используется в бизнесе)."
+  },
+  {
+    "id": 13,
+    "language": "ru",
+    "in_scope": true,
+    "question": "Нужно ли согласие супруга при продаже квартиры, купленной в браке?",
+    "expected_keywords": ["соглас", "нотариальн", "брак"],
+    "expected_source": "13_notary_and_purchase_steps_kr.md",
+    "reference_answer": "Да, нотариально заверенное согласие супруга или супруги обязательно, если квартира приобреталась в браке."
+  },
+  {
+    "id": 14,
+    "language": "ru",
+    "in_scope": true,
+    "question": "Можно ли получить ипотеку по программе KfW («Ашар» или «Кут-конуш») для покупки квартиры в Бишкеке?",
+    "expected_keywords": ["бишкек", "регион", "не финансир"],
+    "expected_source": "06_gik_kfw_regional_programs.md",
+    "reference_answer": "Нет, программы KfW («Ашар», «Кут-конуш») действуют только для регионов Кыргызстана за исключением Бишкека и Оша."
+  },
+  {
+    "id": 15,
+    "language": "en",
+    "in_scope": true,
+    "question": "How do citizens submit an application for the GIK Menin Uyum mortgage in Kyrgyzstan?",
+    "expected_keywords": ["portal.gik.kg", "tunduk", "balance"],
+    "expected_source": "05_gik_application_tunduk_portal.md",
+    "reference_answer": "Applications are submitted online via portal.gik.kg (gik.kg), verified automatically via Tunduk, and confirmed through the Balance.kg app."
+  },
+  {
+    "id": 16,
+    "language": "en",
+    "in_scope": true,
+    "question": "What documents should a buyer check before paying for an unfinished DDU apartment in Bishkek?",
+    "expected_keywords": ["gosstroy", "permit", "cadastre"],
+    "expected_source": "14_ddu_shared_construction_risks_kr.md",
+    "reference_answer": "Check the Gosstroy construction registry, building permit, SMR license, land plot status (Red or Green Book zoned for multi-family residential), and register the DDU at GU Cadastre."
+  },
+  {
+    "id": 17,
+    "language": "ky",
+    "in_scope": true,
+    "question": "ГИК «Менин үйүм» аркылуу жеке сектордо иштегендерге ипотека канча пайыз менен берилет?",
+    "expected_keywords": ["8%", "25", "20%"],
+    "expected_source": "17_kyrgyz_guide_gik_and_cadastre_kg.md",
+    "reference_answer": "Жеке сектордо иштегендер үчүн «Жеткиликтүү ипотека» жылдык 8% менен 25 жылга чейин, 20% баштапкы төлөм менен берилет."
+  },
+  {
+    "id": 18,
+    "language": "ky",
+    "in_scope": true,
+    "question": "Бишкекте батирге «Кызыл китеп» берилеби?",
+    "expected_keywords": ["берилбейт", "жер", "техникалык паспорт"],
+    "expected_source": "17_kyrgyz_guide_gik_and_cadastre_kg.md",
+    "reference_answer": "Жок, «Кызыл китеп» жер тилкесине гана берилет; батирдин негизги документтери — келишим, Техникалык паспорт жана ГУ «Кадастр» каттоосу."
+  },
+  {
+    "id": 19,
+    "language": "en",
+    "in_scope": false,
+    "question": "What is the mortgage interest rate for first-time buyers in Almaty, Kazakhstan under the 7-20-25 program?",
+    "expected_keywords": [],
+    "expected_source": "NONE",
+    "reference_answer": "OUT_OF_SCOPE: The assistant must say it does not know / this is not covered in the verified Kyrgyz Republic real estate documents."
+  },
+  {
+    "id": 20,
+    "language": "ru",
+    "in_scope": false,
+    "question": "Сколько стоит квадратный метр коммерческого склада в Токио и какие там налоги на землю?",
+    "expected_keywords": [],
+    "expected_source": "NONE",
+    "reference_answer": "OUT_OF_SCOPE: Ассистент должен честно сказать, что этих данных нет в проверенных документах по недвижимости Кыргызстана."
+  }
+]
