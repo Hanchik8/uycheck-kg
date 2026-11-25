@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import sys
 import warnings
 
@@ -20,7 +21,7 @@ if SRC_DIR not in sys.path:
 
 from ml_model import BishkekPricePredictor, CONDITION_LABELS_EN, HOUSE_TYPE_LABELS
 from nlp_model import EMBED_MODEL_NAME, ListingNLPAnalyzer
-from rag_engine import KyrgyzRealEstateRAG
+from rag_engine import KyrgyzRealEstateRAG, detect_language
 
 load_dotenv(os.path.join(ROOT_DIR, ".env"))
 
@@ -435,9 +436,10 @@ def main():
                         "Because the text is unreliable, ML did not trust it for renovation classification."
                     )
 
-                # Save latest ML result in session so Tab 2 can also answer "Why this result?"!
+                # Save latest ML & NLP results in session so Tab 2 can also answer "Why this result?"!
                 st.session_state.last_ml_result = ml_res
                 st.session_state.last_ml_inputs = payload
+                st.session_state.last_nlp_result = nlp_res
 
                 # 3. Unified Integrated Response (ML + NLP + RAG together!)
                 with st.spinner("Combining ML valuation, NLP signals, and official KR legal documents..."):
@@ -518,27 +520,96 @@ def main():
         if active_q:
             st.session_state.chat_history.append({"role": "user", "content": active_q})
             q_low = active_q.lower()
-            asks_why_price = any(
-                k in q_low for k in ["why this result", "why this price", "why did i get", "почему такая цена", "почему такой результат", "эмне үчүн мындай баа"]
-            )
-            if asks_why_price and st.session_state.get("last_ml_result"):
-                lr = st.session_state["last_ml_result"]
-                li = st.session_state.get("last_ml_inputs", {})
-                drivers_md = "\n".join(
-                    f"- **{d['label']}** (`{d['value']}`): **{d['usd_impact']:+,.0f}$**"
-                    for d in lr.get("top_drivers", [])[:6]
+            q_lang = detect_language(active_q)
+            has_legal_topic = bool(re.search(
+                r"(гик|ипотек|налог|салык|кадастр|нотариус|закон|кфв|kfw|дду|красн\w*\s+книг|кызыл\s+китеп|"
+                r"алмат|казахстан|ош\b|штраф|перепланиров|выписк|түндүк|mortgage|tax|cadastre|notary|law)",
+                q_low,
+            ))
+            asks_why_price = (not has_legal_topic) and bool(
+                re.search(
+                    r"((why|explain|how\s+did|what\s+drove|reason|breakdown).*(result|price|valuat|predict|estimat|number|output|cost|fair))"
+                    r"|((result|price|valuat|predict|estimat).*(why|explain|reason|breakdown))"
+                    r"|((почему|объясни|откуда|как\s+получил|как\s+рассчита|из\s+чего|что\s+повлиял|за\s+сч[её]т\s+чего).*(такая|такой|эта|этот|оценк|цен|стоимост|результат|прогноз|расч[её]т|модел|сумм))"
+                    r"|((оценк|цен|стоимост|результат|прогноз).*(почему|объясни|откуда|из\s+чего))"
+                    r"|((эмне\s+үчүн|кантип\s+чык|эмнеден\s+чык|түшүндүр).*(баа|жыйынтык|эсеп|модел|мындай))",
+                    q_low,
                 )
-                ans = {
-                    "status": "answered",
-                    "answer": (
-                        f"Your latest apartment estimate (**{li.get('district', '')}**, {li.get('area', '')} m², "
-                        f"{li.get('rooms', '')} rooms) is **${lr['fair_price_usd']:,.0f}** "
-                        f"(**${lr['fair_price_per_m2']:,.0f}/m²**), starting from the Bishkek baseline of "
-                        f"**${lr['base_market_usd']:,.0f}**.\n\n**Top input drivers (SHAP):**\n{drivers_md}"
-                    ),
-                    "sources": ["ML SHAP Explainer (Bishkek Real Estate LightGBM + CatBoost)"],
-                    "retrieved": [],
-                }
+            )
+            if asks_why_price:
+                if st.session_state.get("last_ml_result"):
+                    lr = st.session_state["last_ml_result"]
+                    li = st.session_state.get("last_ml_inputs", {})
+                    ln = st.session_state.get("last_nlp_result")
+                    drivers_md = "\n".join(
+                        f"- **{d['label']}** (`{d['value']}`): **{d['usd_impact']:+,.0f}$**"
+                        for d in lr.get("top_drivers", [])[:6]
+                    )
+                    if q_lang == "ru":
+                        verdict_line = (
+                            f" Запрашиваемая цена **${lr['asking_price_usd']:,.0f}** "
+                            f"({lr['overprice_pct']:+.1f}% к рынку — {lr['price_verdict']})."
+                            if lr.get("asking_price_usd") and lr.get("overprice_pct") is not None
+                            else ""
+                        )
+                        nlp_line = (
+                            f"\n\n**Учтённый сигнал из текста объявления (NLP):** {ln['display_condition']} "
+                            f"(уверенность {ln['confidence']:.0%})."
+                            if ln
+                            else ""
+                        )
+                        ans_text = (
+                            f"Оценка для последней проверенной квартиры (**{li.get('district', '')}**, "
+                            f"{li.get('area', '')} м², {li.get('rooms', '')} комн.) составила "
+                            f"**${lr['fair_price_usd']:,.0f}** (**${lr['fair_price_per_m2']:,.0f}/м²**).{verdict_line}\n\n"
+                            f"Расчёт начинается от базового среднего уровня рынка Бишкека "
+                            f"(**${lr['base_market_usd']:,.0f}**), после чего на итоговую цену сильнее всего повлияли "
+                            f"следующие параметры (вклад по SHAP):\n{drivers_md}{nlp_line}"
+                        )
+                        src_label = "Модель оценки недвижимости Бишкека (SHAP-разбор факторов)"
+                    elif q_lang == "ky":
+                        ans_text = (
+                            f"Акыркы текшерилген батир (**{li.get('district', '')}**, "
+                            f"{li.get('area', '')} м², {li.get('rooms', '')} бөлмө) үчүн рыноктук баа "
+                            f"**${lr['fair_price_usd']:,.0f}** (**${lr['fair_price_per_m2']:,.0f}/м²**) деп эсептелди.\n\n"
+                            f"Эсептөө Бишкек рыногунун базалык деңгээлинен (**${lr['base_market_usd']:,.0f}**) "
+                            f"башталып, негизги факторлор төмөнкүдөй таасир этти (SHAP):\n{drivers_md}"
+                        )
+                        src_label = "Бишкек кыймылсыз мүлк баалоо модели (SHAP)"
+                    else:
+                        verdict_line = (
+                            f" Asking price **${lr['asking_price_usd']:,.0f}** "
+                            f"({lr['overprice_pct']:+.1f}% vs. market — {lr['price_verdict']})."
+                            if lr.get("asking_price_usd") and lr.get("overprice_pct") is not None
+                            else ""
+                        )
+                        ans_text = (
+                            f"Your latest apartment estimate (**{li.get('district', '')}**, {li.get('area', '')} m², "
+                            f"{li.get('rooms', '')} rooms) is **${lr['fair_price_usd']:,.0f}** "
+                            f"(**${lr['fair_price_per_m2']:,.0f}/m²**).{verdict_line}\n\n"
+                            f"Starting from the Bishkek market baseline (**${lr['base_market_usd']:,.0f}**), "
+                            f"these top input drivers shaped the price (SHAP):\n{drivers_md}"
+                        )
+                        src_label = "ML SHAP Explainer (Bishkek Real Estate Ensemble)"
+                    ans = {
+                        "status": "answered",
+                        "answer": ans_text,
+                        "sources": [src_label],
+                        "retrieved": [],
+                    }
+                else:
+                    if q_lang == "ru":
+                        hint = "Сначала выполните расчёт квартиры на первой вкладке («1. Integrated Apartment Check»), и я сразу покажу подробный разбор факторов, из которых сложилась её рыночная цена."
+                    elif q_lang == "ky":
+                        hint = "Адегенде биринчи өтмөктө батирди текшерип баалап алыңыз, андан кийин мен баа эмнеден куралганын так түшүндүрүп берем."
+                    else:
+                        hint = "Please run an apartment valuation on Tab 1 first, and I will break down the exact SHAP price drivers for that apartment here."
+                    ans = {
+                        "status": "answered",
+                        "answer": hint,
+                        "sources": [],
+                        "retrieved": [],
+                    }
             else:
                 with st.spinner("Searching verified KR documents..."):
                     ans = rag_engine.answer_question(active_q)

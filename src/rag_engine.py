@@ -345,7 +345,16 @@ class KyrgyzRealEstateRAG:
                 "retrieved": retrieved,
             }
 
-        used_sources = [f"{r['doc_id']} ({r['section']})" for r in retrieved[:3]]
+        seen_docs = set()
+        used_sources = []
+        for r in retrieved:
+            if r["doc_id"] not in seen_docs:
+                seen_docs.add(r["doc_id"])
+                used_sources.append(f"{r['doc_id']} ({r['section']})")
+            if len(used_sources) >= 3:
+                break
+        if not used_sources:
+            used_sources = [f"{r['doc_id']} ({r['section']})" for r in retrieved[:3]]
 
         if not llm_reply:
             # Deterministic grounded fallback if API key is missing/offline
@@ -425,8 +434,18 @@ class KyrgyzRealEstateRAG:
         if extra_terms:
             rag_query = f"{rag_query} | {' '.join(extra_terms)}"
 
-        retrieved, best_dense, best_bm25 = self.retrieve(rag_query, top_k=4)
-        used_sources = [f"{r['doc_id']} ({r['section']})" for r in retrieved[:3]]
+        retrieved, best_dense, best_bm25 = self.retrieve(rag_query, top_k=5)
+        # Prefer distinct documents in the summary sources list so both legal/GIK & DDU docs appear cleanly
+        seen_docs = set()
+        used_sources = []
+        for r in retrieved:
+            if r["doc_id"] not in seen_docs:
+                seen_docs.add(r["doc_id"])
+                used_sources.append(f"{r['doc_id']} ({r['section']})")
+            if len(used_sources) >= 3:
+                break
+        if not used_sources:
+            used_sources = [f"{r['doc_id']} ({r['section']})" for r in retrieved[:3]]
 
         # Clean natural context formatting (no robotic [Source N] labels!)
         ctx_str = "\n\n---\n\n".join(
