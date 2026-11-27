@@ -260,23 +260,69 @@ header[data-testid="stHeader"] { background: transparent; height: 2.2rem; }
     margin-top: 0.35rem;
 }
 
-.panel-card {
+[data-testid="stVerticalBlockBorderWrapper"] {
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.35rem 1.55rem;
-    margin-top: 0.85rem;
-    line-height: 1.66;
-    font-size: 0.94rem;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    padding: 0.35rem 0.45rem;
 }
-.panel-card h3, .panel-card h4 {
-    margin-top: 0.8rem;
-    margin-bottom: 0.35rem;
-    font-size: 0.98rem;
-    font-weight: 700;
+[data-testid="stVerticalBlockBorderWrapper"] h1,
+[data-testid="stVerticalBlockBorderWrapper"] h2,
+[data-testid="stVerticalBlockBorderWrapper"] h3 {
+    font-size: 1.02rem !important;
+    font-weight: 700 !important;
+    color: var(--ink) !important;
+    margin-top: 0.9rem !important;
+    margin-bottom: 0.35rem !important;
+}
+[data-testid="stVerticalBlockBorderWrapper"] h1:first-child,
+[data-testid="stVerticalBlockBorderWrapper"] h2:first-child,
+[data-testid="stVerticalBlockBorderWrapper"] h3:first-child {
+    margin-top: 0.1rem !important;
+}
+[data-testid="stVerticalBlockBorderWrapper"] p,
+[data-testid="stVerticalBlockBorderWrapper"] li {
+    font-size: 0.93rem;
+    line-height: 1.62;
     color: var(--ink);
 }
-.panel-card p { margin-bottom: 0.65rem; }
+
+.bench-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0.5rem 0 1.2rem 0;
+    font-size: 0.86rem;
+}
+.bench-table th {
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    background: var(--surface-soft);
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+}
+.bench-table th.num, .bench-table td.num {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+}
+.bench-table td {
+    padding: 0.62rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink);
+}
+.bench-table tr:last-child td { border-bottom: none; }
+.bench-table tr.best-row td {
+    background: var(--pine-soft);
+    font-weight: 700;
+    color: var(--pine);
+}
 
 .tag-chip {
     display: inline-block;
@@ -921,7 +967,8 @@ def main():
                     rag_res = rag.answer_integrated(ml_res, nlp_res, question, payload, ad_text=ad_text)
 
                 st.markdown(f"<div style='height:0.9rem;'></div><div class='sec-eyebrow'>{t['sec_brief']}</div>", unsafe_allow_html=True)
-                st.markdown(f"<div class='panel-card'>{rag_res['answer']}</div>", unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown(rag_res["answer"])
 
                 st.markdown("<div style='height:0.8rem;'></div>", unsafe_allow_html=True)
                 dcol1, dcol2 = st.columns([1.22, 0.95], gap="large")
@@ -1046,13 +1093,29 @@ def main():
 
         st.markdown(f"**{t['sys_ml_head'].format(clean=m_ml['clean_rows'], raw=m_ml['total_raw_rows'])}**")
         rows_tbl = [
-            {"Model": "Baseline: Global Median", "MAE ($)": m_ml["baselines"]["global_median"]["mae_usd"], "RMSE ($)": m_ml["baselines"]["global_median"]["rmse_usd"], "MAPE (%)": m_ml["baselines"]["global_median"]["mape_pct"], "R²": m_ml["baselines"]["global_median"]["r2"]},
-            {"Model": "Baseline: Ridge Regression", "MAE ($)": m_ml["baselines"]["ridge_regression"]["mae_usd"], "RMSE ($)": m_ml["baselines"]["ridge_regression"]["rmse_usd"], "MAPE (%)": m_ml["baselines"]["ridge_regression"]["mape_pct"], "R²": m_ml["baselines"]["ridge_regression"]["r2"]},
-            {"Model": "LightGBM", "MAE ($)": m_ml["models"]["lightgbm"]["mae_usd"], "RMSE ($)": m_ml["models"]["lightgbm"]["rmse_usd"], "MAPE (%)": m_ml["models"]["lightgbm"]["mape_pct"], "R²": m_ml["models"]["lightgbm"]["r2"]},
-            {"Model": "CatBoost", "MAE ($)": m_ml["models"]["catboost"]["mae_usd"], "RMSE ($)": m_ml["models"]["catboost"]["rmse_usd"], "MAPE (%)": m_ml["models"]["catboost"]["mape_pct"], "R²": m_ml["models"]["catboost"]["r2"]},
-            {"Model": "Ensemble (50% LGB + 50% CB)", "MAE ($)": m_ml["models"]["ensemble_lgb_cb"]["mae_usd"], "RMSE ($)": m_ml["models"]["ensemble_lgb_cb"]["rmse_usd"], "MAPE (%)": m_ml["models"]["ensemble_lgb_cb"]["mape_pct"], "R²": m_ml["models"]["ensemble_lgb_cb"]["r2"]},
+            ("Baseline: Global Median", m_ml["baselines"]["global_median"], False),
+            ("Baseline: Ridge Regression", m_ml["baselines"]["ridge_regression"], False),
+            ("LightGBM", m_ml["models"]["lightgbm"], False),
+            ("CatBoost", m_ml["models"]["catboost"], False),
+            ("Ensemble (50% LGB + 50% CB)", m_ml["models"]["ensemble_lgb_cb"], True),
         ]
-        st.dataframe(rows_tbl, use_container_width=True, hide_index=True)
+        tr_html = "".join(
+            f"<tr class='{'best-row' if best else ''}'>"
+            f"<td>{name}</td>"
+            f"<td class='num'>${m['mae_usd']:,.1f}</td>"
+            f"<td class='num'>${m['rmse_usd']:,.1f}</td>"
+            f"<td class='num'>{m['mape_pct']:.2f}%</td>"
+            f"<td class='num'>{m['r2']:.4f}</td>"
+            f"</tr>"
+            for name, m, best in rows_tbl
+        )
+        st.markdown(
+            f"<table class='bench-table'><thead><tr>"
+            f"<th>Model</th><th class='num'>MAE</th><th class='num'>RMSE</th>"
+            f"<th class='num'>MAPE</th><th class='num'>R²</th>"
+            f"</tr></thead><tbody>{tr_html}</tbody></table>",
+            unsafe_allow_html=True,
+        )
 
         st.markdown(f"**{t['sys_nlp_head'].format(n=m_nlp['total_labeled_texts'])}**")
         n1, n2, n3, n4 = st.columns(4)
