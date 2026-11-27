@@ -1,7 +1,7 @@
 import json
 import os
 
-ROOT = r"C:\Users\user\.gemini\antigravity\scratch\uycheck-kg"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 with open(os.path.join(ROOT, "tests", "rag_eval_20_results.json"), encoding="utf-8") as f:
     data = json.load(f)
 
@@ -10,7 +10,7 @@ lines = [
     "",
     f"**Score:** **{data['passed']} / {data['total']} ({data['accuracy_pct']}%)**  ",
     "**Corpus:** 17 official Kyrgyz Republic documents (GIK KR, Law No. 153, Housing Code No. 117, GU Cadastre, DDU, KR Tax Code)  ",
-    "**Languages tested:** Russian (14), English (4), Kyrgyz (2) — including 2 out-of-scope refusal tests.",
+    "**Languages:** Russian (14), English (4), Kyrgyz (2) — including 2 out-of-scope refusal cases.",
     "",
     "| # | Lang | Scope | Result | Question | Retrieved Sources |",
     "|---|------|-------|--------|----------|-------------------|",
